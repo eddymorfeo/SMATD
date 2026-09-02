@@ -62,3 +62,15 @@ EXPECTED_COLUMNS = [
     "TIPO VICTIMA DELITO",
     "ACTUALIZACIÓN",
 ]
+
+NULL_REPORT_FILE = (
+    REPORTS_DIR / "reporte_valores_nulos.csv"
+)
+
+DUPLICATE_DETAIL_REPORT_FILE = (
+    REPORTS_DIR / "reporte_duplicados_detalle.csv"
+)
+
+DUPLICATE_SUMMARY_REPORT_FILE = (
+    REPORTS_DIR / "reporte_duplicados_resumen.csv"
+)
