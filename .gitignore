@@ -1,0 +1,41 @@
+# Entorno virtual
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# VS Code
+.vscode/
+
+# Datos sensibles
+data/raw/*
+data/processed/*
+
+# Conservar estructura de datos
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Resultados generados
+outputs/*
+
+# Recuperar carpetas de resultados
+!outputs/reports/
+!outputs/charts/
+!outputs/alerts/
+
+# Ignorar el contenido generado
+outputs/reports/*
+outputs/charts/*
+outputs/alerts/*
+
+# Conservar estructura de resultados
+!outputs/reports/.gitkeep
+!outputs/charts/.gitkeep
+!outputs/alerts/.gitkeep
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Variables de entorno
+.env
