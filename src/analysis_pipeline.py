@@ -1,7 +1,14 @@
 from src.config import (
+    ADDRESS_ALIAS_CATALOG_FILE,
+    ADDRESS_QUALITY_REPORT_FILE,
     DUPLICATE_DETAIL_REPORT_FILE,
     DUPLICATE_SUMMARY_REPORT_FILE,
+    NORMALIZED_DATA_FILE,
     NULL_REPORT_FILE,
+)
+from src.address_normalization import (
+    generate_address_quality_report,
+    normalize_addresses,
 )
 from src.data_loader import load_source_data
 from src.data_quality import generate_initial_profile
@@ -115,6 +122,49 @@ def run_analysis_pipeline() -> None:
     print(
         f"Resumen de duplicados generado: "
         f"{DUPLICATE_SUMMARY_REPORT_FILE}"
+    )
+
+    normalized_dataframe = normalize_addresses(
+        dataframe=dataframe,
+        catalog_file=ADDRESS_ALIAS_CATALOG_FILE,
+    )
+
+    if len(normalized_dataframe) != len(dataframe):
+        raise RuntimeError(
+            "La normalización alteró la cantidad de filas: "
+            f"entrada={len(dataframe):,}, "
+            f"salida={len(normalized_dataframe):,}."
+        )
+
+    export_dataframe_to_csv(
+        dataframe=normalized_dataframe,
+        output_file=NORMALIZED_DATA_FILE,
+    )
+
+    address_quality_report = (
+        generate_address_quality_report(
+            normalized_dataframe
+        )
+    )
+
+    export_dataframe_to_csv(
+        dataframe=address_quality_report,
+        output_file=ADDRESS_QUALITY_REPORT_FILE,
+    )
+
+    print(
+        "Filas conservadas después de normalizar: "
+        f"{len(normalized_dataframe):,}"
+    )
+
+    print(
+        "Datos normalizados generados: "
+        f"{NORMALIZED_DATA_FILE}"
+    )
+
+    print(
+        "Reporte de normalización generado: "
+        f"{ADDRESS_QUALITY_REPORT_FILE}"
     )
 
     print(

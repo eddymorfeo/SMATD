@@ -14,6 +14,18 @@ ALERTS_DIR = OUTPUT_DIR / "alerts"
 
 SOURCE_FILE = RAW_DIR / "Reportes de Apoyo SAF - Delitos Ingresados.xlsx"
 
+ADDRESS_ALIAS_CATALOG_FILE = (
+    CATALOGS_DIR / "address_aliases.csv"
+)
+
+NORMALIZED_DATA_FILE = (
+    PROCESSED_DIR / "delitos_normalizados.csv"
+)
+
+ADDRESS_QUALITY_REPORT_FILE = (
+    REPORTS_DIR / "reporte_normalizacion_direcciones.csv"
+)
+
 EXPECTED_COLUMNS = [
     "PARTE",
     "FECHA PARTE",
