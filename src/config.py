@@ -26,6 +26,17 @@ ADDRESS_QUALITY_REPORT_FILE = (
     REPORTS_DIR / "reporte_normalizacion_direcciones.csv"
 )
 
+ANALYSIS_YEAR = 2026
+DATA_MATURITY_DAYS = 21
+
+TEMPORAL_DATA_FILE = (
+    PROCESSED_DIR / "delitos_2026_temporal.csv"
+)
+
+DATE_QUALITY_REPORT_FILE = (
+    REPORTS_DIR / "reporte_calidad_fechas.csv"
+)
+
 EXPECTED_COLUMNS = [
     "PARTE",
     "FECHA PARTE",
