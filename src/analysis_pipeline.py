@@ -1,10 +1,14 @@
 from src.config import (
     ADDRESS_ALIAS_CATALOG_FILE,
     ADDRESS_QUALITY_REPORT_FILE,
+    ANALYSIS_YEAR,
+    DATA_MATURITY_DAYS,
+    DATE_QUALITY_REPORT_FILE,
     DUPLICATE_DETAIL_REPORT_FILE,
     DUPLICATE_SUMMARY_REPORT_FILE,
     NORMALIZED_DATA_FILE,
     NULL_REPORT_FILE,
+    TEMPORAL_DATA_FILE,
 )
 from src.address_normalization import (
     generate_address_quality_report,
@@ -12,6 +16,11 @@ from src.address_normalization import (
 )
 from src.data_loader import load_source_data
 from src.data_quality import generate_initial_profile
+from src.date_preprocessing import (
+    enrich_temporal_data,
+    filter_analysis_year,
+    generate_date_quality_report,
+)
 from src.duplicate_analysis import generate_duplicate_reports
 from src.report_exporter import export_dataframe_to_csv
 
@@ -165,6 +174,47 @@ def run_analysis_pipeline() -> None:
     print(
         "Reporte de normalización generado: "
         f"{ADDRESS_QUALITY_REPORT_FILE}"
+    )
+
+    temporal_dataframe = enrich_temporal_data(
+        dataframe=normalized_dataframe,
+        analysis_year=ANALYSIS_YEAR,
+        maturity_days=DATA_MATURITY_DAYS,
+    )
+
+    analysis_year_dataframe = filter_analysis_year(
+        dataframe=temporal_dataframe,
+        analysis_year=ANALYSIS_YEAR,
+    )
+
+    date_quality_report = generate_date_quality_report(
+        dataframe=temporal_dataframe,
+        analysis_year=ANALYSIS_YEAR,
+    )
+
+    export_dataframe_to_csv(
+        dataframe=analysis_year_dataframe,
+        output_file=TEMPORAL_DATA_FILE,
+    )
+
+    export_dataframe_to_csv(
+        dataframe=date_quality_report,
+        output_file=DATE_QUALITY_REPORT_FILE,
+    )
+
+    print(
+        f"Registros con FECHA DELITO de {ANALYSIS_YEAR}: "
+        f"{len(analysis_year_dataframe):,}"
+    )
+
+    print(
+        "Datos temporales generados: "
+        f"{TEMPORAL_DATA_FILE}"
+    )
+
+    print(
+        "Reporte de calidad temporal generado: "
+        f"{DATE_QUALITY_REPORT_FILE}"
     )
 
     print(
